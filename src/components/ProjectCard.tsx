@@ -1,95 +1,55 @@
 import { motion } from 'framer-motion';
-import { ExternalLink, Play, Github } from 'lucide-react';
+import { ExternalLink, Play } from 'lucide-react';
 import type { Project } from '../data/projects';
 
 interface ProjectCardProps {
   project: Project;
   onPlay?: (project: Project) => void;
+  onSelect?: (project: Project) => void;
 }
 
-export const ProjectCard = ({ project, onPlay }: ProjectCardProps) => {
+export const ProjectCard = ({ project, onPlay, onSelect }: ProjectCardProps) => {
   const isGame = project.isGame;
+  const hasExternal = !!(project.demoUrl || project.repoUrl);
 
-  return (
-    <motion.article
-      className="group relative overflow-hidden rounded-2xl border border-slate-200 bg-white p-4 shadow-lg transition hover:-translate-y-1"
-      initial={{ opacity: 0, y: 12 }}
-      animate={{ opacity: 1, y: 0 }}
-    >
-      <div className="relative overflow-hidden rounded-xl">
+  const content = (
+    <>
+      <div className="absolute inset-0 overflow-hidden">
         <img
           src={project.imageUrl}
           alt={project.title}
-          className="h-48 w-full object-cover transition duration-500 group-hover:scale-105"
+          className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/30 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-br from-black/45 via-black/25 to-transparent" />
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(255,255,255,0.12),transparent_35%),radial-gradient(circle_at_80%_10%,rgba(255,255,255,0.1),transparent_30%)] opacity-60" />
         {isGame && (
-          <span className="absolute left-4 top-4 inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white/90 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-sky-700 shadow-sm">
-            <Play className="h-3.5 w-3.5" /> ブラウザプレイ
+          <span className="absolute left-2 top-2 inline-flex items-center gap-1 rounded-full border border-white/50 bg-white/80 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wide text-slate-800 shadow-sm backdrop-blur">
+            <Play className="h-3.5 w-3.5" /> Play
           </span>
         )}
-      </div>
-
-      <div className="mt-4 space-y-3">
-        <div className="flex items-start justify-between gap-3">
-          <div>
-            <h3 className="text-lg font-semibold text-slate-900">{project.title}</h3>
-            <p className="text-sm text-slate-700">{project.description}</p>
+        <div className="absolute inset-x-2 bottom-2 rounded-lg bg-white/85 px-2.5 py-2 shadow-md backdrop-blur">
+          <div className="flex items-center justify-between text-[12px] font-semibold text-slate-900">
+            <span className="line-clamp-1">{project.title}</span>
+            {hasExternal && <ExternalLink className="h-3.5 w-3.5 text-orange-500" />}
           </div>
-          {!isGame && project.demoUrl && (
-            <a
-              href={project.demoUrl}
-              target="_blank"
-              rel="noreferrer"
-              className="flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-700 transition hover:border-neon/60 hover:text-sky-600"
-            >
-              <ExternalLink className="h-4 w-4" />
-            </a>
-          )}
-        </div>
-
-        <div className="flex flex-wrap gap-2">
-          {project.techStack.map((tech) => (
-            <span key={tech} className="rounded-full border border-slate-200 bg-white px-3 py-1 text-xs text-slate-700 shadow-sm">
-              {tech}
-            </span>
-          ))}
-        </div>
-
-        <div className="flex items-center gap-3 pt-1">
-          {isGame && onPlay ? (
-            <button
-              onClick={() => onPlay(project)}
-              className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-neon to-aurora px-4 py-2 text-sm font-semibold text-slate-900 shadow-lg shadow-neon/10 transition hover:shadow-aurora/20"
-            >
-              <Play className="h-4 w-4" /> ゲームを遊ぶ
-            </button>
-          ) : (
-            <div className="flex gap-2">
-              {project.repoUrl && (
-                <a
-                  href={project.repoUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-800 transition hover:border-neon/60 hover:text-sky-700"
-                >
-                  <Github className="h-4 w-4" /> GitHub
-                </a>
-              )}
-              {project.demoUrl && (
-                <a
-                  href={project.demoUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-800 transition hover:border-purple-300 hover:text-purple-700"
-                >
-                  <ExternalLink className="h-4 w-4" /> サイトを見る
-                </a>
-              )}
-            </div>
-          )}
         </div>
       </div>
-    </motion.article>
+    </>
+  );
+
+  return (
+    <motion.div
+      className="group relative block aspect-square overflow-hidden rounded-xl border border-orange-100 bg-white shadow-[0_14px_40px_rgba(255,159,64,0.2)] transition hover:-translate-y-1 hover:shadow-[0_18px_50px_rgba(255,159,64,0.25)]"
+      initial={{ opacity: 0, y: 12 }}
+      animate={{ opacity: 1, y: 0 }}
+      onClick={() => {
+        if (onSelect) return onSelect(project);
+        if (isGame && onPlay) onPlay(project);
+      }}
+      role="button"
+      tabIndex={0}
+    >
+      {content}
+    </motion.div>
   );
 };

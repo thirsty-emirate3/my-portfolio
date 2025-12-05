@@ -16,9 +16,9 @@ body {
   margin: 0;
   min-height: 100vh;
   background: #f8fafc;
-  background-image: radial-gradient(circle at 20% 20%, rgba(56, 189, 248, 0.14), transparent 38%),
-    radial-gradient(circle at 82% 10%, rgba(168, 85, 247, 0.12), transparent 30%),
-    linear-gradient(120deg, rgba(125, 211, 252, 0.2), rgba(254, 215, 170, 0.18));
+  background-image: radial-gradient(circle at 18% 20%, rgba(251, 146, 60, 0.14), transparent 38%),
+    radial-gradient(circle at 82% 10%, rgba(248, 180, 80, 0.12), transparent 32%),
+    linear-gradient(120deg, rgba(255, 237, 213, 0.28), rgba(253, 186, 116, 0.16));
 }
 
 .glass-panel {
