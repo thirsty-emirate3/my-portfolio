@@ -1,5 +1,6 @@
 
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import { motion } from 'framer-motion';
 import { Play, RotateCcw, Crown } from 'lucide-react';
 
 const NQueensVisualizer: React.FC = () => {
@@ -9,9 +10,9 @@ const NQueensVisualizer: React.FC = () => {
     const [queens, setQueens] = useState<number[]>([]); // queens[col] = row
     const [currentCol, setCurrentCol] = useState(-1);
     const [currentRow, setCurrentRow] = useState(-1);
-    const [solutions, setSolutions] = useState(0);
+
     const [isPlaying, setIsPlaying] = useState(false);
-    const [speed, setSpeed] = useState(100);
+    const [speed] = useState(100);
     const [status, setStatus] = useState("Ready");
 
     const stopRef = useRef(false);
@@ -26,54 +27,16 @@ const NQueensVisualizer: React.FC = () => {
         setQueens(Array(n).fill(-1));
         setCurrentCol(-1);
         setCurrentRow(-1);
-        setSolutions(0);
+
         setStatus("Ready");
         stopRef.current = false;
     };
 
     const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
-    const isSafe = (board: number[], row: number, col: number) => {
-        for (let prevCol = 0; prevCol < col; prevCol++) {
-            const prevRow = board[prevCol];
-            if (prevRow === row) return false; // Suggests conflict
-            if (Math.abs(prevRow - row) === Math.abs(prevCol - col)) return false; // Diagonal conflict
-        }
-        return true;
-    };
 
-    const solveNQueens = async (col: number) => {
-        if (stopRef.current) return false;
 
-        if (col >= n) {
-            setSolutions(prev => prev + 1);
-            setStatus(`Found solution! Total: ${solutions + 1}`);
-            await delay(speed * 5); // Pause on solution
-            return true; // Return true to stop at first solution? Or false to find all? Let's find all (or just one for simplicity). Let's just find one for now or loop.
-            // If we want visualizer, maybe we stop after one or continue. Let's return true to finish.
-        }
 
-        for (let row = 0; row < n; row++) {
-            if (stopRef.current) return false;
-
-            setCurrentCol(col);
-            setCurrentRow(row);
-
-            // Visualize placement attempt
-            setQueens(prev => {
-                const newQ = [...prev];
-                newQ[col] = row;
-                return newQ;
-            });
-            await delay(speed);
-
-            if (isSafe(queens, row, col)) { // Note: 'queens' state might be stale in closure, need to pass explicit 'queens' logic or use ref.
-                // Actually relying on React state for logic is flaky in async loops.
-                // We need a local 'board' tracking.
-            }
-        }
-        return false;
-    };
 
     // Correct logic with local state tracking
     const runSolver = async () => {

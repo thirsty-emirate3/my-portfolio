@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+
 import { Play, RotateCcw, Trophy, Timer, Keyboard, Volume2, VolumeX, Info } from 'lucide-react';
 import { SoundController } from '../../utils/SoundController';
 import { GameInstructions } from '../common/GameInstructions';

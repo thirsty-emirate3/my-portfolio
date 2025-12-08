@@ -36,7 +36,6 @@ export const SoundController = {
     playSuccess() {
         if (!this.ctx) this.init();
         if (!this.ctx) return;
-        const now = this.ctx.currentTime;
         this.playTone(600, 'sine', 0.1, 0.1);
         setTimeout(() => this.playTone(800, 'sine', 0.1, 0.1), 100);
     },

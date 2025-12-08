@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState } from 'react';
 
 type NodeType = 'start' | 'end' | 'wall' | 'empty' | 'visited' | 'path';
 
@@ -56,7 +56,7 @@ export const PathfindingVisualizer: React.FC = () => {
                     if (node.type === 'start' || node.type === 'end') return node;
                     return {
                         ...node,
-                        type: Math.random() < 0.3 ? 'wall' : 'empty'
+                        type: (Math.random() < 0.3 ? 'wall' : 'empty') as NodeType
                     };
                 }));
                 return newGrid;
@@ -113,7 +113,7 @@ export const PathfindingVisualizer: React.FC = () => {
         const endNode = grid.flat().find(n => n.type === 'end')!;
 
         const visitedNodesInOrder: Node[] = [];
-        const queue: Node[] = [startNode];
+
         startNode.distance = 0;
 
         // RUN ALGO (Instant logic, then animate)

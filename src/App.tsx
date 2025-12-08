@@ -31,7 +31,6 @@ const youtubeVideos = [
 ];
 
 function App() {
-  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [activeGame, setActiveGame] = useState<Project | null>(null);
   const [showAllAlgorithms, setShowAllAlgorithms] = useState(false);
   const [algoTab, setAlgoTab] = useState<'All' | 'Graph' | 'Simulation' | 'Logic'>('All');
