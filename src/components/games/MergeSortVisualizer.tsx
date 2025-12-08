@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Play, RotateCcw, Pause, Sliders, Info, Check } from 'lucide-react';
+import { Play, RotateCcw, Pause, Sliders } from 'lucide-react';
 
 // Types
 type ArrayBar = {
@@ -62,10 +62,10 @@ const MergeSortVisualizer: React.FC = () => {
         await mergeSort(arr, mid + 1, end, copyArr);
 
         if (stopRef.current) return;
-        await merge(arr, start, mid, end, copyArr);
+        await merge(start, mid, end, copyArr);
     };
 
-    const merge = async (arr: ArrayBar[], start: number, mid: number, end: number, copyArr: ArrayBar[]) => {
+    const merge = async (start: number, mid: number, end: number, copyArr: ArrayBar[]) => {
         if (stopRef.current) return;
         setStatus(`Merging [${start}-${mid}] and [${mid + 1}-${end}]`);
 
@@ -81,17 +81,8 @@ const MergeSortVisualizer: React.FC = () => {
         }
         await delay(Math.max(10, 200 - speedRef.current * 1.8));
 
-        let left = start;
-        let right = mid + 1;
-        const sortedSub: ArrayBar[] = [];
 
-        // Helper to find original value in copyArr (using ID if possible would be better, but index is okay for simple merge)
-        // Actually we need to work on the copyArr directly for values
 
-        // Perform standard merge on temp array values
-        const tempValues: ArrayBar[] = [];
-        let l = left;
-        let r = right;
 
         // We need to read from the CURRENT state of the array in the visualizer? 
         // No, standard merge uses a snapshot or auxiliary array.
@@ -176,10 +167,10 @@ const MergeSortVisualizer: React.FC = () => {
                     <button
                         onClick={handleStart}
                         className={`flex items-center gap-2 px-4 py-2 rounded-lg font-bold transition-all shadow-sm ${isPlaying
-                                ? 'bg-amber-100 text-amber-700 hover:bg-amber-200'
-                                : isSorted
-                                    ? 'bg-emerald-100 text-emerald-700 hover:bg-emerald-200'
-                                    : 'bg-blue-600 text-white hover:bg-blue-700'
+                            ? 'bg-amber-100 text-amber-700 hover:bg-amber-200'
+                            : isSorted
+                                ? 'bg-emerald-100 text-emerald-700 hover:bg-emerald-200'
+                                : 'bg-blue-600 text-white hover:bg-blue-700'
                             }`}
                     >
                         {isPlaying ? <><Pause size={18} /> Stop</> : isSorted ? <><RotateCcw size={18} /> Restart</> : <><Play size={18} /> Sort</>}

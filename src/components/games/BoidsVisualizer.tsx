@@ -1,6 +1,6 @@
 
 import React, { useEffect, useRef, useState } from 'react';
-import { RotateCcw, Sliders } from 'lucide-react';
+import { RotateCcw } from 'lucide-react';
 
 type Boid = {
     x: number;
@@ -16,7 +16,7 @@ const BoidsVisualizer: React.FC = () => {
     const [separation, setSeparation] = useState(4);
     const [alignment, setAlignment] = useState(4);
     const [cohesion, setCohesion] = useState(4);
-    const [visualRange, setVisualRange] = useState(60);
+    const [visualRange] = useState(60);
 
     const COUNT = 100;
 

@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect, useRef } from 'react';
-import { Play, RotateCcw, Pencil, MousePointer2 } from 'lucide-react';
+import { RotateCcw, Pencil } from 'lucide-react';
 
 type Complex = { re: number; im: number };
 type FourierCoef = { freq: number; amp: number; phase: number; re: number; im: number };
@@ -9,7 +9,6 @@ const FourierVisualizer: React.FC = () => {
     const [path, setPath] = useState<Complex[]>([]);
     const [fourierX, setFourierX] = useState<FourierCoef[]>([]);
     const [time, setTime] = useState(0);
-    const [trace, setTrace] = useState<Complex[]>([]);
     const [isDrawing, setIsDrawing] = useState(false);
     const [state, setState] = useState<'draw' | 'computing' | 'playing'>('draw');
 
@@ -47,8 +46,8 @@ const FourierVisualizer: React.FC = () => {
     const handleMouseDown = (e: React.MouseEvent) => {
         if (state !== 'draw') return;
         setIsDrawing(true);
+        setIsDrawing(true);
         setPath([]);
-        setTrace([]);
         addPoint(e);
     };
 
@@ -66,7 +65,6 @@ const FourierVisualizer: React.FC = () => {
             setTimeout(() => {
                 const f = dft(path);
                 setFourierX(f);
-                setTrace([]);
                 setTime(0);
                 setState('playing');
             }, 100);
@@ -87,7 +85,7 @@ const FourierVisualizer: React.FC = () => {
     const reset = () => {
         setState('draw');
         setPath([]);
-        setTrace([]);
+        setPath([]);
         setFourierX([]);
         setTime(0);
     };
@@ -99,7 +97,6 @@ const FourierVisualizer: React.FC = () => {
             setTime(prev => {
                 const next = prev + dt;
                 if (next > Math.PI * 2) {
-                    setTrace([]); // Loop trace
                     return 0;
                 }
                 return next;

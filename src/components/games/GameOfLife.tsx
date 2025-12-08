@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 
 const numRows = 30;
 const numCols = 30;
@@ -159,7 +159,7 @@ export const GameOfLife: React.FC = () => {
                     }}
                 >
                     {grid.map((rows, i) =>
-                        rows.map((col, k) => (
+                        rows.map((_, k) => (
                             <div
                                 key={`${i}-${k}`}
                                 onClick={() => {

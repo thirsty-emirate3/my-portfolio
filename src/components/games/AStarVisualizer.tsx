@@ -1,6 +1,6 @@
 
-import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { Play, RotateCcw, Pause, MousePointer2 } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import { Play, RotateCcw } from 'lucide-react';
 
 // Types
 type NodeType = 'start' | 'goal' | 'wall' | 'empty' | 'visited' | 'path' | 'open';
@@ -22,7 +22,7 @@ const AStarVisualizer: React.FC = () => {
     const [isPlaying, setIsPlaying] = useState(false);
     const [isFinished, setIsFinished] = useState(false);
     const [mouseIsPressed, setMouseIsPressed] = useState(false);
-    const [nodeTypeToPlace, setNodeTypeToPlace] = useState<'wall'>('wall');
+
 
     // Stats
     const [nodesVisited, setNodesVisited] = useState(0);

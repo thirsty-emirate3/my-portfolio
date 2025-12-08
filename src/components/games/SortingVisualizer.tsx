@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Play, RefreshCw, Settings2, BarChart2 } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { Play, RefreshCw, Settings2 } from 'lucide-react';
 
 // --- Types ---
 type AlgorithmType = 'Bubble Sort' | 'Quick Sort' | 'Merge Sort';
@@ -12,13 +12,13 @@ type AlgorithmType = 'Bubble Sort' | 'Quick Sort' | 'Merge Sort';
 export const SortingVisualizer = () => {
     const [array, setArray] = useState<number[]>([]);
     const [algorithm, setAlgorithm] = useState<AlgorithmType>('Bubble Sort');
-    const [originalArray, setOriginalArray] = useState<number[]>([]);
+
     const [isSorting, setIsSorting] = useState(false);
     const [isSorted, setIsSorted] = useState(false);
     const [comparisons, setComparisons] = useState(0);
     const [swaps, setSwaps] = useState(0);
     const [activeIndices, setActiveIndices] = useState<number[]>([]); // Indices currently being compared
-    const [speed, setSpeed] = useState(50); // ms delay
+    const [speed] = useState(50); // ms delay
 
     const containerRef = useRef<HTMLDivElement>(null);
 
@@ -30,7 +30,6 @@ export const SortingVisualizer = () => {
             newArr.push(Math.floor(Math.random() * 90) + 10); // 10-100
         }
         setArray(newArr);
-        setOriginalArray([...newArr]);
         setIsSorted(false);
         setIsSorting(false);
         setComparisons(0);

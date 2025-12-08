@@ -1,6 +1,6 @@
 
 import React, { useEffect, useRef, useState } from 'react';
-import { RotateCcw, Wind } from 'lucide-react';
+import { RotateCcw } from 'lucide-react';
 
 type Point = {
     x: number;
@@ -25,7 +25,6 @@ const ClothVisualizer: React.FC = () => {
 
     // Physics Config
     const friction = 0.99;
-    const bounce = 0.9;
     const gravity = 0.5;
     const cols = 20;
     const rows = 15;
@@ -169,11 +168,7 @@ const ClothVisualizer: React.FC = () => {
 
             // Draw points
             c.fillStyle = '#64748b';
-            points.forEach(p => {
-                // c.beginPath();
-                // c.arc(p.x, p.y, 2, 0, Math.PI*2);
-                // c.fill();
-            }); // Skip points for cleaner look, mesh only
+            // Skip points for cleaner look, mesh only
 
             // Mouse indicator
             if (mouse.isDown) {

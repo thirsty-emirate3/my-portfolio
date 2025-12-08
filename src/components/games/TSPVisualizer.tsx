@@ -9,7 +9,7 @@ const TSPVisualizer: React.FC = () => {
     const [bestPath, setBestPath] = useState<number[]>([]);
     const [points, setPoints] = useState<number>(20);
     const [isPlaying, setIsPlaying] = useState(false);
-    const [distance, setDistance] = useState(0);
+
     const [bestDistance, setBestDistance] = useState(Infinity);
     const [currentPath, setCurrentPath] = useState<number[]>([]); // For visualization of 'trying'
 
@@ -38,7 +38,7 @@ const TSPVisualizer: React.FC = () => {
         setBestPath(initialPath);
         setCurrentPath(initialPath);
         const d = calcDistance(newCities, initialPath);
-        setDistance(d);
+
         setBestDistance(d);
         stopRef.current = false;
     };
