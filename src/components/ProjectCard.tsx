@@ -8,9 +8,10 @@ interface ProjectCardProps {
   onSelect?: (project: Project) => void;
 }
 
-export const ProjectCard = ({ project, onPlay, onSelect }: ProjectCardProps) => {
+export const ProjectCard = ({ project, onSelect }: ProjectCardProps) => {
   const isGame = project.isGame;
-  const hasExternal = !!(project.demoUrl || project.repoUrl);
+  const targetUrl = project.demoUrl || project.repoUrl;
+  const hasExternal = !!targetUrl;
 
   const content = (
     <>
@@ -37,19 +38,31 @@ export const ProjectCard = ({ project, onPlay, onSelect }: ProjectCardProps) => 
     </>
   );
 
+  // Logic Fix: If we have an onSelect callback, we prioritize using the button (modal)
+  // regardless of whether there is a targetUrl (external link).
+  // This allows games with dummy URLs or real URLs to still open in the modal if desired.
+  const Wrapper: React.ElementType = onSelect ? 'button' : (targetUrl ? 'a' : 'div');
+
+  const wrapperProps = onSelect
+    ? {
+      type: 'button' as const,
+      onClick: () => onSelect(project),
+      className: 'absolute inset-0 w-full h-full text-left'
+    }
+    : (targetUrl
+      ? { href: targetUrl, target: '_blank', rel: 'noreferrer' }
+      : { role: 'button', tabIndex: 0 }
+    );
+
   return (
     <motion.div
       className="group relative block aspect-square overflow-hidden rounded-xl border border-orange-100 bg-white shadow-[0_14px_40px_rgba(255,159,64,0.2)] transition hover:-translate-y-1 hover:shadow-[0_18px_50px_rgba(255,159,64,0.25)]"
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
-      onClick={() => {
-        if (onSelect) return onSelect(project);
-        if (isGame && onPlay) onPlay(project);
-      }}
-      role="button"
-      tabIndex={0}
     >
-      {content}
+      <Wrapper {...wrapperProps} className="absolute inset-0">
+        {content}
+      </Wrapper>
     </motion.div>
   );
 };
