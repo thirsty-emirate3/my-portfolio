@@ -63,8 +63,19 @@ import { RecursiveTree } from '../components/games/RecursiveTree';
 import { PathfindingVisualizer } from '../components/games/PathfindingVisualizer';
 import { BSTVisualizer } from '../components/games/BSTVisualizer';
 import { MazeVisualizer } from '../components/games/MazeVisualizer';
+import { SlidePuzzle } from '../components/games/SlidePuzzle';
 
 export const projects: Project[] = [
+  {
+    id: 38,
+    title: '15パズル (Slide)',
+    description: 'バラバラになった数字のタイルをスライドさせて、1から15まで順番に並べるクラシックパズル。',
+    techStack: ['React', 'Logic', 'Animation'],
+    imageUrl: nQueensThumb,
+    isGame: true,
+    category: 'Game',
+    component: SlidePuzzle,
+  },
   {
     id: 1,
     title: 'Geek Hackathon Timer',

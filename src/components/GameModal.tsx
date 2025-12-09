@@ -1,6 +1,8 @@
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, ExternalLink, Play } from 'lucide-react';
+import { X, ExternalLink, Play, Maximize2, Minimize2 } from 'lucide-react';
+import { useState, useEffect } from 'react';
 import type { Project } from '../data/projects';
+import { useAchievements } from '../context/AchievementContext';
 
 interface GameModalProps {
   open: boolean;
@@ -12,6 +14,30 @@ export const GameModal = ({ open, project, onClose }: GameModalProps) => {
   // WebGLは直接iframeで埋め込める。Unity Playの場合は外部リンク
   const isUnityPlay = project?.demoUrl?.includes('play.unity.com') ?? false;
   const canEmbed = project?.demoUrl && !isUnityPlay;
+  const [isFullscreen, setIsFullscreen] = useState(false);
+  const { unlock, incrementProjectCount } = useAchievements();
+
+  // Reset fullscreen when closing or changing project
+  if (!open && isFullscreen) setIsFullscreen(false);
+
+  useEffect(() => {
+    if (open && project) {
+      incrementProjectCount();
+
+      if (project.isGame) {
+        unlock('played_game');
+      } else {
+        unlock('algo_master');
+      }
+    }
+  }, [open, project]);
+
+  const toggleFullscreen = () => {
+    if (!isFullscreen) {
+      unlock('used_fullscreen');
+    }
+    setIsFullscreen(!isFullscreen);
+  };
 
   return (
     <AnimatePresence>
@@ -23,41 +49,54 @@ export const GameModal = ({ open, project, onClose }: GameModalProps) => {
           exit={{ opacity: 0 }}
         >
           <motion.div
-            className="glass-panel relative flex w-[95%] max-w-5xl max-h-[90vh] flex-col overflow-hidden rounded-2xl border border-orange-200/70 bg-gradient-to-br from-white via-orange-50/60 to-amber-100/60"
+            className={`glass-panel relative flex flex-col overflow-hidden bg-gradient-to-br from-white via-orange-50/60 to-amber-100/60 shadow-2xl transition-all duration-300 ${isFullscreen ? 'w-full h-full rounded-none' : 'w-[95%] max-w-5xl max-h-[90vh] rounded-2xl border border-orange-200/70'}`}
             initial={{ opacity: 0, scale: 0.96, y: 10 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95 }}
             transition={{ type: 'spring', stiffness: 160, damping: 20 }}
           >
-            <button
-              onClick={onClose}
-              className="absolute right-4 top-4 z-10 inline-flex h-10 w-10 items-center justify-center rounded-full border border-orange-200 bg-white text-slate-700 transition hover:-translate-y-0.5 hover:border-orange-300 hover:text-orange-700"
-              aria-label="閉じる"
-            >
-              <X className="h-5 w-5" />
-            </button>
+            <div className="absolute right-4 top-4 z-10 flex gap-2">
+              <button
+                onClick={toggleFullscreen}
+                className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-orange-200 bg-white text-slate-700 transition hover:-translate-y-0.5 hover:border-orange-300 hover:text-orange-700"
+                aria-label={isFullscreen ? "通常モード" : "全画面"}
+              >
+                {isFullscreen ? <Minimize2 className="h-5 w-5" /> : <Maximize2 className="h-5 w-5" />}
+              </button>
+              <button
+                onClick={onClose}
+                className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-orange-200 bg-white text-slate-700 transition hover:-translate-y-0.5 hover:border-orange-300 hover:text-orange-700"
+                aria-label="閉じる"
+              >
+                <X className="h-5 w-5" />
+              </button>
+            </div>
 
-            <div className="flex-1 overflow-y-auto p-6 sm:p-8">
-              <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                <div>
-                  <p className="text-xs uppercase tracking-[0.25em] text-orange-700/80">ゲームをプレイ</p>
-                  <h3 className="text-2xl font-semibold text-slate-900">{project.title}</h3>
-                  <p className="text-sm text-slate-700">{project.description}</p>
-                  <div className="mt-2 flex flex-wrap gap-2">
-                    {project.techStack.map((tech) => (
-                      <span key={tech} className="rounded-full border border-orange-200 bg-white px-3 py-1 text-xs font-semibold text-orange-700 shadow-sm shadow-orange-100">
-                        {tech}
-                      </span>
-                    ))}
+            <div className={`flex flex-col h-full ${isFullscreen ? 'p-0' : 'p-6 sm:p-8 overflow-y-auto'}`}>
+              {!isFullscreen && (
+                <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between mb-6 flex-shrink-0">
+                  <div>
+                    <p className="text-xs uppercase tracking-[0.25em] text-orange-700/80">ゲームをプレイ</p>
+                    <h3 className="text-2xl font-semibold text-slate-900">{project.title}</h3>
+                    <p className="text-sm text-slate-700">{project.description}</p>
+                    <div className="mt-2 flex flex-wrap gap-2">
+                      {project.techStack.map((tech) => (
+                        <span key={tech} className="rounded-full border border-orange-200 bg-white px-3 py-1 text-xs font-semibold text-orange-700 shadow-sm shadow-orange-100">
+                          {tech}
+                        </span>
+                      ))}
+                    </div>
                   </div>
                 </div>
-              </div>
+              )}
 
-              <div className="mt-6 overflow-hidden rounded-xl border border-orange-200/70 bg-white shadow-sm">
+              <div className={`overflow-hidden border border-orange-200/70 bg-white shadow-sm transition-all duration-300 ${isFullscreen ? 'h-full w-full rounded-none border-0' : 'rounded-xl flex-1'}`}>
                 {project.component ? (
-                  <div className="relative w-full bg-slate-50">
+                  <div className="relative w-full h-full bg-slate-50 flex items-center justify-center">
                     {/* Render the custom game component */}
-                    <project.component />
+                    <div className="w-full h-full flex flex-col">
+                      <project.component />
+                    </div>
                   </div>
                 ) : canEmbed ? (
                   <div className="relative aspect-video w-full bg-slate-900">
