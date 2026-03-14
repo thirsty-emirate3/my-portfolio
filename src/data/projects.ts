@@ -24,6 +24,7 @@ import blockBreakerThumb from '../assets/thumbnails/thumb_block_breaker.png';
 import memoryThumb from '../assets/thumbnails/thumb_memory.png';
 import whackABugThumb from '../assets/thumbnails/thumb_whack_a_bug.png';
 import simonThumb from '../assets/thumbnails/thumb_simon.png';
+import runningThumb from '../assets/thumbnails/running_app.png';
 
 export interface Project {
   id: number;
@@ -83,6 +84,16 @@ export const projects: Project[] = [
     techStack: ['Next.js', 'Docker', 'TypeScript'],
     imageUrl: timerThumb,
     demoUrl: 'https://docker-next-js-geek-hackathon.vercel.app/',
+    isGame: false,
+    category: 'Project',
+  },
+  {
+    id: 3,
+    title: 'ランニングルート生成アプリ',
+    description: 'ランニングのルートを自動生成するWebアプリ。現在地や指定した場所からのランニングコースを簡単に作成できます。',
+    techStack: ['Next.js', 'React', 'Google Maps API'],
+    imageUrl: runningThumb,
+    demoUrl: 'https://runnningapp.vercel.app/',
     isGame: false,
     category: 'Project',
   },

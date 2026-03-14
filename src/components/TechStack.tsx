@@ -1,181 +1,150 @@
-import { useState, useEffect, useRef } from 'react';
-import {
-    Palette,
-    Terminal,
-    Cpu
-} from 'lucide-react';
+import { useState } from 'react';
+import { Terminal, Palette, Cpu, ChevronDown } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const SKILLS = [
     {
-        category: '開発言語',
-        icon: <Terminal className="text-slate-600" />,
+        id: 'languages',
+        title: '開発言語',
+        icon: <Terminal className="w-5 h-5 text-slate-700" />,
         items: [
-            { name: 'C / C#', duration: '4年', context: '大学', level: 'Advanced' },
-            { name: 'Python', duration: '3年', context: '研究・長期インターン', level: 'Advanced' },
-            { name: 'TypeScript', duration: '2年', context: '趣味・長期インターン', level: 'Advanced' },
-            { name: 'Mojo / SIMD / AVX-512', duration: '半年', context: '長期インターン', level: 'Advanced' },
-            { name: 'Swift / JavaScript', duration: '', context: '趣味', level: 'Intermediate' },
+            { name: 'C / C#', duration: '4年', context: '大学' },
+            { name: 'Python', duration: '3年', context: '研究・長期インターン' },
+            { name: 'TypeScript', duration: '2年', context: '趣味・長期インターン' },
+            { name: 'Mojo / SIMD / AVX-512', duration: '半年', context: '長期インターン' },
+            { name: 'Swift / JavaScript', duration: '', context: '趣味' }
         ]
     },
     {
-        category: 'フロントエンド & ゲーム',
-        icon: <Palette className="text-pink-500" />,
+        id: 'frontend',
+        title: 'フロントエンド & ゲーム',
+        icon: <Palette className="w-5 h-5 text-pink-500" />,
         items: [
-            { name: 'React', duration: '2年', context: '趣味・長期インターン', level: 'Intermediate' },
-            { name: 'Unity', duration: '半年', context: '趣味', level: 'Intermediate' },
-            { name: 'OpenCV', duration: '半年', context: '趣味', level: 'Intermediate' },
-            { name: 'HTML / CSS', duration: '2年', context: '趣味・長期インターン', level: 'Intermediate' },
+            { name: 'React', duration: '2年', context: '趣味・長期インターン' },
+            { name: 'Unity', duration: '半年', context: '趣味' },
+            { name: 'OpenCV', duration: '半年', context: '趣味' },
+            { name: 'HTML / CSS', duration: '2年', context: '趣味・長期インターン' }
         ]
     },
     {
-        category: 'ハードウェア & ツール',
-        icon: <Cpu className="text-blue-500" />,
+        id: 'hardware',
+        title: 'ハードウェア & ツール',
+        icon: <Cpu className="w-5 h-5 text-blue-500" />,
         items: [
-            { name: 'Arduino', duration: '1年', context: '研究', level: 'Intermediate' },
-            { name: 'FPGA / Vivado', duration: '半年', context: '長期インターン', level: 'Intermediate' },
-            { name: 'Linux', duration: '1年', context: '長期インターン', level: 'Intermediate' },
-            { name: 'AWS', duration: '半年', context: '趣味', level: 'Intermediate' },
-            { name: 'Fusion360 / 3D Print', duration: '1年', context: '研究', level: 'Intermediate' },
+            { name: 'Arduino', duration: '1年', context: '研究' },
+            { name: 'FPGA / Vivado', duration: '半年', context: '長期インターン' },
+            { name: 'Linux', duration: '1年', context: '長期インターン' },
+            { name: 'AWS', duration: '半年', context: '趣味' },
+            { name: 'Fusion360 / 3D Print', duration: '1年', context: '研究' }
         ]
     }
 ];
 
+const Tag = ({ text }: { text: string }) => {
+    let colorClass = 'bg-slate-50 text-slate-600 border-slate-200';
+    if (text.includes('研究・長期インターン')) {
+        colorClass = 'bg-blue-50 text-blue-600 border-blue-100';
+    } else if (text.includes('研究')) {
+        colorClass = 'bg-blue-50 text-blue-600 border-blue-100';
+    } else if (text.includes('趣味・長期インターン')) {
+        colorClass = 'bg-purple-50 text-purple-600 border-purple-100';
+    } else if (text.includes('長期インターン')) {
+        colorClass = 'bg-purple-50 text-purple-600 border-purple-100';
+    } else if (text.includes('趣味')) {
+        colorClass = 'bg-emerald-50 text-emerald-600 border-emerald-100';
+    }
 
-
-const getContextColor = (context: string) => {
-    if (context.includes('研究')) return 'bg-blue-50 text-blue-700 ring-1 ring-inset ring-blue-700/10';
-    if (context.includes('インターン')) return 'bg-purple-50 text-purple-700 ring-1 ring-inset ring-purple-700/10';
-    if (context.includes('趣味')) return 'bg-emerald-50 text-emerald-700 ring-1 ring-inset ring-emerald-700/10';
-    return 'bg-slate-50 text-slate-700 ring-1 ring-inset ring-slate-700/10';
+    return (
+        <span className={`px-2.5 py-1 text-[10px] sm:text-xs font-bold rounded-full border ${colorClass} inline-block whitespace-nowrap`}>
+            {text}
+        </span>
+    );
 };
 
 export const TechStack = () => {
-    const [activeCategory, setActiveCategory] = useState(SKILLS[0].category);
-    const scrollContainerRef = useRef<HTMLDivElement>(null);
-    const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
+    // Using an array of open state so multiple accordions can be open if desired.
+    // The user requested a pull-down style.
+    const [openSections, setOpenSections] = useState<string[]>([]);
 
-    useEffect(() => {
-        const observer = new IntersectionObserver(
-            (entries) => {
-                entries.forEach((entry) => {
-                    if (entry.isIntersecting) {
-                        const index = Number(entry.target.getAttribute('data-index'));
-                        setActiveCategory(SKILLS[index].category);
-                    }
-                });
-            },
-            {
-                root: scrollContainerRef.current,
-                threshold: 0.6
-            }
+    const toggleSection = (id: string) => {
+        setOpenSections(prev =>
+            prev.includes(id) ? prev.filter(s => s !== id) : [...prev, id]
         );
-
-        cardRefs.current.forEach((card) => {
-            if (card) observer.observe(card);
-        });
-
-        return () => observer.disconnect();
-    }, []);
-
-    const container = {
-        hidden: { opacity: 0 },
-        show: {
-            opacity: 1,
-            transition: {
-                staggerChildren: 0.05
-            }
-        }
-    };
-
-    const item = {
-        hidden: { opacity: 0, y: 10 },
-        show: { opacity: 1, y: 0 }
     };
 
     return (
-        <section id="skills" className="space-y-6 py-12">
-            <div className="flex items-center justify-between px-2">
-                <div>
-                    <p className="text-xs uppercase tracking-[0.25em] text-blue-600/80 font-bold">Skills</p>
-                    <div className="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-3">
-                        <h2 className="text-3xl font-semibold text-slate-900">開発スキル</h2>
-                        <div className="md:hidden h-8 overflow-hidden relative min-w-[200px]">
-                            <AnimatePresence mode="wait">
-                                <motion.span
-                                    key={activeCategory}
-                                    initial={{ y: 20, opacity: 0 }}
-                                    animate={{ y: 0, opacity: 1 }}
-                                    exit={{ y: -20, opacity: 0 }}
-                                    transition={{ duration: 0.3, ease: "easeOut" }}
-                                    className="absolute left-0 top-1 text-sm font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-500 whitespace-nowrap"
-                                >
-                                    {activeCategory}
-                                </motion.span>
-                            </AnimatePresence>
-                        </div>
-                    </div>
-                </div>
+        <section id="skills" className="w-full">
+            <div className="mb-8">
+                <p className="text-xs uppercase tracking-[0.25em] text-blue-600/80 font-bold mb-2">Skills</p>
+                <h2 className="text-3xl font-semibold text-slate-900">開発スキル</h2>
             </div>
 
-            <div
-                ref={scrollContainerRef}
-                className="flex overflow-x-auto gap-4 pb-4 snap-x no-scrollbar md:grid md:grid-cols-3 md:gap-6 md:overflow-visible md:pb-0 -mx-4 px-4 md:mx-0 md:px-0"
-            >
-                {SKILLS.map((skillGroup, index) => (
-                    <motion.div
-                        key={skillGroup.category}
-                        ref={(el) => (cardRefs.current[index] = el)}
-                        data-index={index}
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ delay: index * 0.1 }}
-                        className="min-w-[85vw] sm:min-w-[350px] md:min-w-0 snap-center bg-white/80 backdrop-blur-sm rounded-2xl border border-slate-200/60 p-6 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1 hover:border-blue-200/60 group"
-                    >
-                        <div className="hidden md:flex items-center gap-4 mb-6">
-                            <div className="p-3 bg-white rounded-xl border border-slate-100 shadow-sm group-hover:scale-110 transition-transform duration-300">
-                                {skillGroup.icon}
-                            </div>
-                            <h3 className="font-bold text-lg text-slate-800">{skillGroup.category}</h3>
-                        </div>
+            <div className="space-y-4">
+                {SKILLS.map((skillGroup) => {
+                    const isOpen = openSections.includes(skillGroup.id);
 
-                        <motion.div
-                            variants={container}
-                            initial="hidden"
-                            whileInView="show"
-                            viewport={{ once: true }}
-                            className="grid grid-cols-2 gap-2 sm:gap-4"
+                    return (
+                        <div
+                            key={skillGroup.id}
+                            className="border border-slate-200/80 rounded-2xl bg-white shadow-sm overflow-hidden"
                         >
-                            {skillGroup.items.map((skillItem) => (
-                                <motion.div
-                                    key={skillItem.name}
-                                    variants={item}
-                                    className="flex flex-col justify-between p-3 rounded-xl bg-white shadow-[0_2px_8px_rgba(0,0,0,0.04)] ring-1 ring-slate-100 hover:ring-blue-100 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 h-full group/item"
-                                >
-                                    <div className="space-y-1.5 mb-2">
-                                        <div className="flex justify-between items-start gap-1">
-                                            <span className="font-bold text-slate-700 block text-sm sm:text-base leading-snug group-hover/item:text-blue-600 transition-colors">
-                                                {skillItem.name}
-                                            </span>
+                            <button
+                                onClick={() => toggleSection(skillGroup.id)}
+                                className="w-full flex items-center justify-between p-4 sm:p-5 bg-white hover:bg-slate-50 transition-colors"
+                                aria-expanded={isOpen}
+                            >
+                                <div className="flex items-center gap-4">
+                                    <div className="p-2 sm:p-2.5 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-center">
+                                        {skillGroup.icon}
+                                    </div>
+                                    <h3 className="text-base sm:text-lg font-bold text-slate-800 font-['Space_Grotesk'] tracking-wide">
+                                        {skillGroup.title}
+                                    </h3>
+                                </div>
+                                <div className="p-2">
+                                    <ChevronDown className={`w-5 h-5 text-slate-400 transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} />
+                                </div>
+                            </button>
+
+                            <AnimatePresence initial={false}>
+                                {isOpen && (
+                                    <motion.div
+                                        initial={{ height: 0, opacity: 0 }}
+                                        animate={{ height: 'auto', opacity: 1 }}
+                                        exit={{ height: 0, opacity: 0 }}
+                                        transition={{ duration: 0.3, ease: 'easeInOut' }}
+                                    >
+                                        <div className="p-4 sm:p-5 pt-0 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
+                                            {skillGroup.items.map((item) => (
+                                                <div
+                                                    key={item.name}
+                                                    className="flex flex-col p-4 rounded-xl border border-slate-100 bg-white shadow-[0_2px_10px_rgba(0,0,0,0.02)] hover:shadow-[0_4px_12px_rgba(0,0,0,0.05)] hover:border-slate-200 transition-all duration-300"
+                                                >
+                                                    <div className="flex flex-col mb-3 space-y-1">
+                                                        <span className="font-bold text-slate-900 text-sm sm:text-base font-['Space_Grotesk']">
+                                                            {item.name}
+                                                        </span>
+                                                        {item.duration ? (
+                                                            <span className="text-[11px] sm:text-xs text-slate-400 font-medium flex items-center gap-1.5">
+                                                                <span className="w-1 h-1 rounded-full bg-slate-300"></span>
+                                                                {item.duration}
+                                                            </span>
+                                                        ) : (
+                                                            <span className="h-[18px]"></span> // Spacing placeholder if no duration
+                                                        )}
+                                                    </div>
+                                                    <div className="mt-auto pt-1">
+                                                        <Tag text={item.context} />
+                                                    </div>
+                                                </div>
+                                            ))}
                                         </div>
-                                        {skillItem.duration && (
-                                            <span className="text-xs text-slate-500 font-medium block flex items-center gap-1">
-                                                <span className="w-1 h-1 rounded-full bg-slate-300"></span>
-                                                {skillItem.duration}
-                                            </span>
-                                        )}
-                                    </div>
-                                    <div className="self-start">
-                                        <span className={`text-[10px] sm:text-xs font-semibold px-2 py-0.5 rounded-full ${getContextColor(skillItem.context)} whitespace-nowrap inline-block opacity-90`}>
-                                            {skillItem.context}
-                                        </span>
-                                    </div>
-                                </motion.div>
-                            ))}
-                        </motion.div>
-                    </motion.div>
-                ))}
+                                    </motion.div>
+                                )}
+                            </AnimatePresence>
+                        </div>
+                    );
+                })}
             </div>
         </section>
     );

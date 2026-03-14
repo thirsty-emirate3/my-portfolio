@@ -140,12 +140,12 @@ function App() {
                       setShowAllAlgorithms(false); // Reset expansion when switching tabs
                     }}
                     className={`
-                              px-4 py-1.5 rounded-full text-sm font-semibold whitespace-nowrap transition-all
+px-4 py-1.5 rounded-full text-sm font-semibold whitespace-nowrap transition-all
                               ${algoTab === tab
                         ? 'bg-slate-900 text-white shadow-md'
                         : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-50'
                       }
-                          `}
+`}
                   >
                     {tab === 'All' ? 'すべて' :
                       tab === 'Graph' ? '迷路・ルート' :
@@ -204,10 +204,15 @@ function App() {
             <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
               <div>
                 <p className="text-xs uppercase tracking-[0.25em] text-red-600/80 font-bold">YouTube</p>
-                <h2 className="text-3xl font-semibold text-slate-900">風刺スケッチ</h2>
+                <h2 className="text-3xl font-semibold text-slate-900">チャンネル実績（匿名化）</h2>
                 <p className="text-sm text-slate-600 mt-1 max-w-2xl">
                   説明は日常のちょっとおかしい瞬間を切り取る社会風刺ショートチャンネル
                 </p>
+                <p className="text-sm text-slate-600 mt-2 max-w-2xl leading-relaxed">
+                  このチャンネルは3ヶ月で登録者数1.8万人を突破。徹底した「見る側に寄り添う視点」によって、
+                  継続的な視聴維持とチャンネル成長を実現しました。
+                </p>
+                <p className="text-xs text-slate-500 mt-2">※ チャンネル名・動画情報はプライバシー保護のため一部ぼかし加工しています。</p>
               </div>
               <a
                 href="https://www.youtube.com/@sketchsyakai/videos"
@@ -228,7 +233,7 @@ function App() {
                     <img
                       src={video.thumbnail}
                       alt={video.title}
-                      className="h-full w-full object-cover transition duration-700 group-hover:scale-105"
+                      className="h-full w-full object-cover blur-md transition duration-700 group-hover:scale-105"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-transparent to-transparent opacity-60 transition-opacity group-hover:opacity-40" />
 
@@ -241,7 +246,7 @@ function App() {
                   </div>
 
                   <div className="p-5">
-                    <h3 className="line-clamp-2 text-lg font-bold text-slate-900 group-hover:text-red-700 transition-colors">
+                    <h3 className="line-clamp-2 text-lg font-bold text-slate-900 blur-[3px] select-none group-hover:text-red-700 transition-colors">
                       {video.title}
                     </h3>
                     <p className="mt-2 text-xs text-slate-500 flex items-center gap-1">
@@ -272,12 +277,12 @@ function App() {
                       className="mt-4 block w-full rounded-lg bg-slate-50 px-4 py-2 text-center text-sm font-semibold text-slate-600 transition hover:bg-red-600 hover:text-white"
                     >
                       Watch Video
-                    </a>
-                  </div>
-                </article>
+                    </a >
+                  </div >
+                </article >
               ))}
-            </div>
-          </section>
+            </div >
+          </section >
 
           <section id="contact" className="grid gap-6 rounded-3xl border border-orange-200/70 bg-white/95 p-10 shadow-[0_18px_60px_rgba(255,159,64,0.15)] backdrop-blur lg:grid-cols-2">
             <div className="space-y-3">
@@ -312,12 +317,12 @@ function App() {
               </a>
             </div>
           </section>
-        </main>
+        </main >
 
         <GameModal open={!!activeGame} project={activeGame} onClose={() => setActiveGame(null)} />
         <ProjectModal open={!!activeProject} project={activeProject} onClose={() => setActiveProject(null)} />
-      </div>
-    </AchievementProvider>
+      </div >
+    </AchievementProvider >
   );
 }
 

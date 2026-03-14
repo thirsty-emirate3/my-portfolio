@@ -18,18 +18,26 @@ export const Hero = () => {
               className="text-4xl sm:text-6xl font-bold tracking-tight text-slate-900 font-['Space_Grotesk']"
             >
               Haruto Suzaki
-              <span className="block text-xl sm:text-3xl mt-2 font-medium text-slate-600 font-['Space_Grotesk']">
-                Creative Engineer / YouTuber
-              </span>
             </motion.h1>
-            <motion.p
+            <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
-              className="text-slate-700 leading-relaxed max-w-lg text-base sm:text-lg"
+              className="text-slate-700 leading-relaxed max-w-lg text-base sm:text-lg space-y-4"
             >
-              筑波大学大学院 知能機能システム学位プログラム所属。現在は大学院での研究活動に励みながら、個人開発や YouTube チャンネル『風刺スケッチ』での動画投稿に注力しています。
-            </motion.p>
+              <p className="text-slate-500">筑波大学大学院<br />知能機能システム学位プログラム</p>
+              <div className="space-y-2 rounded-2xl border border-amber-200 bg-amber-50/80 px-4 py-3 shadow-sm">
+                <p className="text-sm font-semibold uppercase tracking-[0.2em] text-amber-700">目指す将来像</p>
+                <p className="text-2xl sm:text-3xl font-bold leading-tight text-slate-900">技術を、誰もが直感的に使える<br />サービスとして届けるエンジニア</p>
+              </div>
+              <p>その将来像に向けて、これまで</p>
+              <ul className="list-disc pl-5 space-y-1">
+                <li>チームで協働しながら成果を生み出す力</li>
+                <li>技術力と最新技術への強い関心</li>
+                <li>YouTube運営を通して培った顧客視点（登録者1.8万人）</li>
+              </ul>
+              <p>を通じて、<span className="font-bold text-red-600">技術力と利用者視点の双方</span>を磨いてきました。</p>
+            </motion.div>
           </div>
 
           <motion.div
@@ -47,30 +55,7 @@ export const Hero = () => {
             </a>
             <div className="flex items-center gap-2">
               <a href="https://github.com/thirsty-emirate3" target="_blank" rel="noreferrer" className="p-2.5 sm:p-3 rounded-full hover:bg-slate-100 transition text-slate-900"><Github className="w-5 h-5" /></a>
-              <a href="https://www.youtube.com/@sketchsyakai" target="_blank" rel="noreferrer" className="p-2.5 sm:p-3 rounded-full hover:bg-slate-100 transition text-[#FF0000]"><Youtube className="w-5 h-5" /></a>
-            </div>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.5 }}
-            className="pt-3 border-t border-slate-100"
-          >
-            <p className="text-xs font-semibold text-slate-400 uppercase tracking-widest mb-2">Activities</p>
-            <div className="flex flex-col gap-2 text-sm sm:text-base text-slate-600 font-['Space_Grotesk']">
-              <div className="flex items-center gap-3">
-                <span className="w-28 sm:w-36 shrink-0 px-2 py-1 bg-orange-50 text-orange-700 border border-orange-200 rounded text-center font-bold tracking-wide">YouTube</span>
-                <span className="font-['Zen_Kaku_Gothic_New']">風刺スケッチ (1.2万人)</span>
-              </div>
-              <div className="flex items-center gap-3">
-                <span className="w-28 sm:w-36 shrink-0 px-2 py-1 bg-slate-50 border border-slate-200 rounded text-center font-bold tracking-wide">Research</span>
-                <span className="font-['Zen_Kaku_Gothic_New']">超敏感柔軟センサの開発</span>
-              </div>
-              <div className="flex items-center gap-3">
-                <span className="w-28 sm:w-36 shrink-0 px-2 py-1 bg-slate-50 border border-slate-200 rounded text-center font-bold tracking-wide">Web / Game</span>
-                <span className="font-['Zen_Kaku_Gothic_New']">ゲーム、Web、アルゴリズム</span>
-              </div>
+              <span aria-label="YouTube" className="p-2.5 sm:p-3 rounded-full text-[#FF0000]"><Youtube className="w-5 h-5" /></span>
             </div>
           </motion.div>
         </div>
@@ -80,7 +65,7 @@ export const Hero = () => {
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.4 }}
-          className="relative h-full min-h-[220px] sm:min-h-[400px] lg:min-h-[500px] flex items-center justify-center rounded-2xl overflow-visible mt-6 lg:mt-0"
+          className="relative w-full aspect-[4/3] sm:aspect-[16/10] lg:aspect-[4/3] flex items-center justify-center overflow-hidden mt-6 lg:mt-0"
         >
           <HeroVisual />
         </motion.div>
