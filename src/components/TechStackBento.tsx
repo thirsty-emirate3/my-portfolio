@@ -1,10 +1,8 @@
 import { motion } from 'framer-motion';
 import {
     Terminal,
-    Palette,
     Cpu,
     Code2,
-    Database,
     Globe,
     Gamepad
 } from 'lucide-react';

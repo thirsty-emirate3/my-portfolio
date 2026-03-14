@@ -14,19 +14,19 @@ const youtubeVideos = [
   {
     id: 'bE8SMp3bU7Y',
     title: '人気動画①',
-    views: '500万回再生',
+    views: '1000万回再生',
     thumbnail: 'https://img.youtube.com/vi/bE8SMp3bU7Y/hqdefault.jpg',
   },
   {
     id: 'DgTM37Pncsg',
     title: '人気動画②',
-    views: '380万回再生',
+    views: '700万回再生',
     thumbnail: 'https://img.youtube.com/vi/DgTM37Pncsg/hqdefault.jpg',
   },
   {
     id: '7IrzJPex-f0',
     title: '人気動画③',
-    views: '200万回再生',
+    views: '400万回再生',
     thumbnail: 'https://img.youtube.com/vi/7IrzJPex-f0/hqdefault.jpg',
   },
 ];
@@ -201,27 +201,36 @@ px-4 py-1.5 rounded-full text-sm font-semibold whitespace-nowrap transition-all
           </section>
 
           <section id="youtube" className="space-y-6">
-            <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-              <div>
+            <div className="space-y-2">
+              <div className="w-full max-w-none">
                 <p className="text-xs uppercase tracking-[0.25em] text-red-600/80 font-bold">YouTube</p>
-                <h2 className="text-3xl font-semibold text-slate-900">チャンネル実績（匿名化）</h2>
-                <p className="text-sm text-slate-600 mt-1 max-w-2xl">
-                  説明は日常のちょっとおかしい瞬間を切り取る社会風刺ショートチャンネル
+                <h2 className="text-3xl font-semibold text-slate-900">チャンネル実績</h2>
+                <p className="mt-1 w-full max-w-none text-base sm:text-lg leading-relaxed text-slate-700">
+                  生成AIを活用し、日常のちょっとおかしい瞬間を切り取る社会風刺ショートを制作しています。
                 </p>
-                <p className="text-sm text-slate-600 mt-2 max-w-2xl leading-relaxed">
-                  このチャンネルは3ヶ月で登録者数1.8万人を突破。徹底した「見る側に寄り添う視点」によって、
+                <p className="mt-3 w-full max-w-none text-base sm:text-xl leading-relaxed text-slate-700">
+                  このチャンネルは3ヶ月で登録者数1.8万人を突破。
+                  <span className="font-bold text-red-600">徹底した「見る手側の視点」</span>によって、
                   継続的な視聴維持とチャンネル成長を実現しました。
                 </p>
-                <p className="text-xs text-slate-500 mt-2">※ チャンネル名・動画情報はプライバシー保護のため一部ぼかし加工しています。</p>
               </div>
-              <a
-                href="https://www.youtube.com/@sketchsyakai/videos"
-                target="_blank"
-                rel="noreferrer"
-                className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-semibold text-slate-700 transition hover:bg-red-50 hover:text-red-600 hover:border-red-200 shadow-sm"
-              >
-                <Youtube className="h-5 w-5 text-red-600" /> チャンネルを見る
-              </a>
+            </div>
+            <div className="grid gap-3 md:grid-cols-2">
+              <article className="h-full rounded-2xl border border-red-100 bg-gradient-to-br from-red-50 to-white p-5 sm:p-6 flex flex-col">
+                <p className="text-xs font-bold uppercase tracking-[0.2em] text-red-600">ターゲット層</p>
+                <p className="mt-2 text-2xl font-extrabold text-slate-900">60代以上</p>
+                <p className="mt-4 text-lg sm:text-xl leading-relaxed text-slate-800">見やすいテンポと分かりやすいテーマ設計で、安心して視聴できる動画体験を重視。</p>
+                <p className="mt-auto rounded-xl border border-red-200/70 bg-white/80 px-4 py-3 text-base sm:text-lg font-semibold leading-relaxed text-slate-700">理由: 現在、YouTube視聴層の<span className="font-bold text-red-600">半数以上が高齢者</span>であるため。</p>
+              </article>
+              <article className="rounded-2xl border border-slate-200 bg-white p-4">
+                <p className="text-xs font-bold uppercase tracking-[0.2em] text-slate-500">動画内容</p>
+                <ul className="mt-2 space-y-2 text-base text-slate-800">
+                  <li className="rounded-lg bg-slate-50 px-3 py-2.5">生成AIを用いた社会風刺動画</li>
+                  <li className="rounded-lg bg-slate-50 px-3 py-2.5">昭和では当たり前だったこと</li>
+                  <li className="rounded-lg bg-slate-50 px-3 py-2.5">生きる上での豆知識</li>
+                </ul>
+                <p className="mt-3 text-sm leading-relaxed text-slate-600">などなど、<span className="font-bold text-red-600">視聴者の共感や会話</span>が生まれるテーマを幅広く扱っています。</p>
+              </article>
             </div>
             <div className="flex overflow-x-auto gap-4 pb-4 snap-x no-scrollbar md:grid md:grid-cols-3 md:gap-6 md:overflow-visible md:pb-0 -mx-4 px-4 md:mx-0 md:px-0">
               {youtubeVideos.map((video) => (
@@ -252,32 +261,9 @@ px-4 py-1.5 rounded-full text-sm font-semibold whitespace-nowrap transition-all
                     <p className="mt-2 text-xs text-slate-500 flex items-center gap-1">
                       <span>{video.views}</span>
                     </p>
-
-                    {/* Embedded Player (Hidden by default or shown?) 
-                        User had it shown. Let's keep it clean but maybe just show thumbnail 
-                        as the 'card' usually links to video. 
-                        The previous code had an iframe INSIDE the card. 
-                        That's a bit heavy for a list. Let's stick to the visual link 
-                        unless the user *really* wants inline playback. 
-                        Actually, the previous code had a thumbnail AND an iframe below it?
-                        "relative aspect-video ... img ... absolute ... bg-gradient ..."
-                        AND then "iframe" below? 
-                        Looking at lines 204-211 (IMG) and 217-225 (IFRAME).
-                        That's redundant. I will simplify to just a clickable card associated with the styling.
-                        Wait, typically users want to click to watch. 
-                        I will make the whole card a link to the video, or keep the iframe but make it cleaner.
-                        Let's keep the iframe but styled better if that's what was there, 
-                        BUT having 3 iframes on a page is heavy.
-                        I'll replace the iframe with a clean visual link to the YouTube video for better performance and style.
-                     */}
-                    <a
-                      href={`https://www.youtube.com/watch?v=${video.id}`}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="mt-4 block w-full rounded-lg bg-slate-50 px-4 py-2 text-center text-sm font-semibold text-slate-600 transition hover:bg-red-600 hover:text-white"
-                    >
-                      Watch Video
-                    </a >
+                    <div className="mt-4 block w-full rounded-lg border border-slate-200 bg-slate-50 px-4 py-2 text-center text-sm font-semibold text-slate-500">
+                      動画リンクは非表示
+                    </div>
                   </div >
                 </article >
               ))}

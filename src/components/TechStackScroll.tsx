@@ -302,7 +302,7 @@ export const TechStackScroll = () => {
 
                 {/* Right Column: Text (Scrolls) */}
                 <div className="pb-20 md:py-32 space-y-24 md:space-y-48">
-                    {SKILLS.map((skill, index) => (
+                    {SKILLS.map((skill) => (
                         <motion.div
                             key={skill.id}
                             initial={{ opacity: 0, x: 20 }}

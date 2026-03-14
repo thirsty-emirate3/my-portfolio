@@ -25,6 +25,8 @@ import memoryThumb from '../assets/thumbnails/thumb_memory.png';
 import whackABugThumb from '../assets/thumbnails/thumb_whack_a_bug.png';
 import simonThumb from '../assets/thumbnails/thumb_simon.png';
 import runningThumb from '../assets/thumbnails/running_app.png';
+import live2dThumb from '../assets/thumbnails/live2d_lineart.png';
+import unityRaceLineartThumb from '../assets/thumbnails/unity_race_lineart.png';
 
 export interface Project {
   id: number;
@@ -94,6 +96,26 @@ export const projects: Project[] = [
     techStack: ['Next.js', 'React', 'Google Maps API'],
     imageUrl: runningThumb,
     demoUrl: 'https://runnningapp.vercel.app/',
+    isGame: false,
+    category: 'Project',
+  },
+  {
+    id: 39,
+    title: 'Live2D作成',
+    description: 'Live2Dモデル制作のデモ。モーションや表情変化を含めた制作内容をまとめています。',
+    techStack: ['Live2D', 'Cubism', 'Animation'],
+    imageUrl: live2dThumb,
+    demoUrl: 'https://drive.google.com/file/d/1TmHelZzIxP7ZLuaxxPe-l8mHM9DgT8ju/preview',
+    isGame: false,
+    category: 'Project',
+  },
+  {
+    id: 40,
+    title: 'Unityレースゲーム',
+    description: '大学の授業で制作したUnityレースゲーム。プレイする側の視点を重視し、速度感・操作レスポンス・視認性のバランスを細かく調整して、直感的に楽しめる体験を目指しました。',
+    techStack: ['Unity', 'C#', 'Game Design'],
+    imageUrl: unityRaceLineartThumb,
+    demoUrl: 'https://youtu.be/SxqGRhIadVY',
     isGame: false,
     category: 'Project',
   },
