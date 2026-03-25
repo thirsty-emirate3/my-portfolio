@@ -28,7 +28,7 @@ export const Hero = () => {
               <p className="text-slate-500">筑波大学大学院<br />知能機能システム学位プログラム</p>
               <div className="space-y-2 rounded-2xl border border-amber-200 bg-amber-50/80 px-4 py-3 shadow-sm">
                 <p className="text-sm font-semibold uppercase tracking-[0.2em] text-amber-700">目指す将来像</p>
-                <p className="text-2xl sm:text-3xl font-bold leading-tight text-slate-900">技術を、誰もが直感的に使える<br />サービスとして届けるエンジニア</p>
+                <p className="text-2xl sm:text-3xl font-bold leading-tight text-slate-900">技術とユーザーをつなぎ、<br />使われるサービスを生み出せるエンジニア</p>
               </div>
               <p>その将来像に向けて、これまで</p>
               <ul className="list-disc pl-5 space-y-1">
