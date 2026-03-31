@@ -12,6 +12,7 @@ import { AchievementNotification } from './components/common/AchievementNotifica
 import { projects, type Project } from './data/projects';
 import { PatternPage } from './PatternPage';
 import { WarpspacePage } from './WarpspacePage';
+import siteLogo from './assets/sitelogo.png';
 
 type AlgoTab = 'All' | 'Graph' | 'Simulation' | 'Logic';
 
@@ -110,7 +111,7 @@ function App() {
         {isLoading && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-white">
             <div className="flex flex-col items-center gap-4">
-              <img src="/src/assets/sitelogo.png" alt="Suzaki STUDIO" className="h-14 sm:h-16 w-auto object-contain animate-pulse" />
+              <img src={siteLogo} alt="Suzaki STUDIO" className="h-14 sm:h-16 w-auto object-contain animate-pulse" />
               <div className="h-1.5 w-28 rounded-full bg-slate-200 overflow-hidden">
                 <div className="h-full w-1/3 rounded-full bg-red-500 animate-[loadingBar_1s_ease-in-out_infinite]" />
               </div>
@@ -125,7 +126,7 @@ function App() {
             <div className="shrink-0">
               <a href="/" className="block">
                 <img
-                  src="/src/assets/sitelogo.png"
+                  src={siteLogo}
                   alt="Suzaki STUDIO"
                   className="h-10 sm:h-12 w-auto object-contain"
                 />
