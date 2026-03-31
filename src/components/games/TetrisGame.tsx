@@ -120,7 +120,7 @@ const TetrisGame: React.FC = () => {
     const move = (dir: 'left' | 'right' | 'down') => {
         if (!currentPiece || isGameOver || isPaused) return;
 
-        let offset = { x: 0, y: 0 };
+        const offset = { x: 0, y: 0 };
         if (dir === 'left') offset.x = -1;
         if (dir === 'right') offset.x = 1;
         if (dir === 'down') offset.y = 1;

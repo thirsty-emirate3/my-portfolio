@@ -35,9 +35,9 @@ const FourierVisualizer: React.FC = () => {
             im = im / N; // Average?
             // Wait, DFT definition usually 1/N. Yes.
 
-            let freq = k;
-            let amp = Math.sqrt(re * re + im * im);
-            let phase = Math.atan2(im, re);
+            const freq = k;
+            const amp = Math.sqrt(re * re + im * im);
+            const phase = Math.atan2(im, re);
             X.push({ freq, amp, phase, re, im });
         }
         return X.sort((a, b) => b.amp - a.amp); // Sort by amplitude for better Epicycles
@@ -141,8 +141,8 @@ const FourierVisualizer: React.FC = () => {
             let y = 0;
 
             for (let i = 0; i < fourierX.length; i++) {
-                let prevX = x;
-                let prevY = y;
+                const prevX = x;
+                const prevY = y;
                 const { freq, amp, phase } = fourierX[i];
 
                 x += amp * Math.cos(freq * time + phase);
@@ -210,7 +210,7 @@ const FourierVisualizer: React.FC = () => {
                 ctx.beginPath();
                 if (traceRef.current.length > 0) {
                     ctx.moveTo(traceRef.current[0].re, traceRef.current[0].im);
-                    for (let p of traceRef.current) ctx.lineTo(p.re, p.im);
+                    for (const p of traceRef.current) ctx.lineTo(p.re, p.im);
                 }
                 ctx.stroke();
 

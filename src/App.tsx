@@ -1,7 +1,8 @@
 
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useEffect, useRef } from 'react';
 import { Github, Mail, Youtube, ChevronDown, ChevronUp } from 'lucide-react';
 import { Hero } from './components/Hero';
+import { HeroStories } from './components/HeroStories';
 import { GameModal } from './components/GameModal';
 import { ProjectCard } from './components/ProjectCard';
 import { ProjectModal } from './components/ProjectModal';
@@ -9,6 +10,34 @@ import { TechStack } from './components/TechStack';
 import { AchievementProvider } from './context/AchievementContext';
 import { AchievementNotification } from './components/common/AchievementNotification';
 import { projects, type Project } from './data/projects';
+import { PatternPage } from './PatternPage';
+import { WarpspacePage } from './WarpspacePage';
+
+type AlgoTab = 'All' | 'Graph' | 'Simulation' | 'Logic';
+
+const ALGO_CATEGORIES: Record<Exclude<AlgoTab, 'All'>, number[]> = {
+  Graph: [11, 21, 15, 24], // Dijkstra, A*, Maze, TSP
+  Simulation: [12, 13, 25, 26, 27], // Life, Tree, Fourier, Cloth, Boids
+  Logic: [6, 14, 20, 22, 23], // Sort, BST, Merge, Queens, Hanoi
+};
+
+const useAutoScroll = (
+  ref: React.RefObject<HTMLDivElement>,
+  enabled: boolean,
+  deps: ReadonlyArray<unknown> = [],
+) => {
+  useEffect(() => {
+    if (!enabled) return;
+    const el = ref.current;
+    if (!el) return;
+    const id = window.setInterval(() => {
+      const max = el.scrollWidth - el.clientWidth;
+      const next = el.scrollLeft + el.clientWidth * 0.6;
+      el.scrollTo({ left: next >= max ? 0 : next, behavior: 'smooth' });
+    }, 4500);
+    return () => window.clearInterval(id);
+  }, [ref, enabled, ...deps]);
+};
 
 const youtubeVideos = [
   {
@@ -32,50 +61,121 @@ const youtubeVideos = [
 ];
 
 function App() {
+  const pathname = typeof window !== 'undefined' ? window.location.pathname : '/';
+  const isPatternMode = pathname.startsWith('/patterns');
+  const isWarpspaceMode = pathname.startsWith('/warpspace');
+
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setIsLoading(false), 900);
+    return () => clearTimeout(timer);
+  }, []);
+
   const [activeGame, setActiveGame] = useState<Project | null>(null);
   const [showAllGames, setShowAllGames] = useState(false);
   const [showAllAlgorithms, setShowAllAlgorithms] = useState(false);
-  const [algoTab, setAlgoTab] = useState<'All' | 'Graph' | 'Simulation' | 'Logic'>('All');
+  const [algoTab, setAlgoTab] = useState<AlgoTab>('All');
   const [activeProject, setActiveProject] = useState<Project | null>(null);
+  const gamesRef = useRef<HTMLDivElement | null>(null);
+  const algosRef = useRef<HTMLDivElement | null>(null);
+  const webRef = useRef<HTMLDivElement | null>(null);
 
   const games = useMemo(() => projects.filter((p) => p.category === 'Game'), []);
   const algorithms = useMemo(() => projects.filter((p) => p.category === 'Algorithm'), []);
   const webWorks = useMemo(() => projects.filter((p) => p.category === 'Project' || (!p.category && !p.isGame)), []);
 
-  const algoCategories = {
-    'Graph': [11, 21, 15, 24], // Dijkstra, A*, Maze, TSP
-    'Simulation': [12, 13, 25, 26, 27], // Life, Tree, Fourier, Cloth, Boids
-    'Logic': [6, 14, 20, 22, 23] // Sort, BST, Merge, Queens, Hanoi
-  };
-
   const filteredAlgorithms = useMemo(() => {
     if (algoTab === 'All') return algorithms;
-    // @ts-ignore
-    const targetIds = algoCategories[algoTab] || [];
-    return algorithms.filter(p => targetIds.includes(p.id));
+    const targetIds = ALGO_CATEGORIES[algoTab] || [];
+    return algorithms.filter((p) => targetIds.includes(p.id));
   }, [algoTab, algorithms]);
 
   const displayedGames = showAllGames ? games : games.slice(0, 6);
   const displayedAlgorithms = showAllAlgorithms ? filteredAlgorithms : filteredAlgorithms.slice(0, 6);
 
+  useAutoScroll(gamesRef, !showAllGames, [displayedGames.length]);
+  useAutoScroll(algosRef, !showAllAlgorithms, [displayedAlgorithms.length, algoTab]);
+  useAutoScroll(webRef, false, [webWorks.length]); // Webは手動のみ
+
+  if (isPatternMode) return <PatternPage />;
+  if (isWarpspaceMode) return <WarpspacePage />;
+
 
   return (
     <AchievementProvider>
-      <div className="min-h-screen bg-[#fdfbf7] text-slate-800 selection:bg-orange-100 selection:text-orange-900 bg-noise">
+      <div className="min-h-screen bg-white text-slate-800 selection:bg-orange-100 selection:text-orange-900">
+
+        {/* Splash Loader */}
+        {isLoading && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-white">
+            <div className="flex flex-col items-center gap-4">
+              <img src="/src/assets/sitelogo.png" alt="Suzaki STUDIO" className="h-14 sm:h-16 w-auto object-contain animate-pulse" />
+              <div className="h-1.5 w-28 rounded-full bg-slate-200 overflow-hidden">
+                <div className="h-full w-1/3 rounded-full bg-red-500 animate-[loadingBar_1s_ease-in-out_infinite]" />
+              </div>
+            </div>
+          </div>
+        )}
         <AchievementNotification />
 
         {/* Floating Navigation (Wide) */}
-        <div className="fixed top-0 left-0 right-0 z-50 flex justify-center pt-4 px-4 pointer-events-none">
-          <nav className="pointer-events-auto flex flex-nowrap items-center justify-between w-full max-w-4xl px-4 sm:px-6 py-3 rounded-2xl border border-black/5 bg-white/80 shadow-sm shadow-black/5 backdrop-blur-md ring-1 ring-white/50 gap-4 overflow-hidden">
-            <a href="/" className="text-sm sm:text-lg font-bold tracking-tight text-slate-900 hover:opacity-70 transition-opacity whitespace-nowrap shrink-0">
-              Haruto Suzaki portfolio
-            </a>
+        <div className="fixed top-0 left-0 right-0 z-50">
+          <nav className="flex items-center w-full px-4 sm:px-8 lg:px-12 py-4 border-b border-slate-200 bg-[#f5f5f5]/95 backdrop-blur">
+            <div className="shrink-0">
+              <a href="/" className="block">
+                <img
+                  src="/src/assets/sitelogo.png"
+                  alt="Suzaki STUDIO"
+                  className="h-10 sm:h-12 w-auto object-contain"
+                />
+              </a>
+            </div>
 
-            <div className="flex items-center gap-1 sm:gap-2 overflow-x-auto no-scrollbar mask-linear-fade">
-              <a href="#games" className="px-3 sm:px-4 py-2 text-xs sm:text-sm font-medium text-slate-600 rounded-lg hover:bg-black/5 hover:text-slate-900 transition-all whitespace-nowrap">Games</a>
-              <a href="#algorithms" className="px-3 sm:px-4 py-2 text-xs sm:text-sm font-medium text-slate-600 rounded-lg hover:bg-black/5 hover:text-slate-900 transition-all whitespace-nowrap">アルゴリズム</a>
-              <a href="#web" className="px-3 sm:px-4 py-2 text-xs sm:text-sm font-medium text-slate-600 rounded-lg hover:bg-black/5 hover:text-slate-900 transition-all whitespace-nowrap">Web Projects</a>
-              <a href="#contact" className="px-3 sm:px-4 py-2 text-xs sm:text-sm font-medium text-slate-600 rounded-lg hover:bg-black/5 hover:text-slate-900 transition-all whitespace-nowrap">Contact</a>
+            <div className="flex-1 flex items-center justify-center gap-6 sm:gap-10 overflow-x-auto no-scrollbar">
+              {[
+                { href: '#vision', label: '自身の夢' },
+                { href: '#wanted', label: 'やりたい仕事' },
+                { href: '#episodes', label: '主なエピソード' },
+                { href: '#games', label: '自作ゲーム' },
+                { href: '#algorithms', label: 'アルゴリズム' },
+                { href: '#web', label: 'Webアプリ' },
+                { href: '#contact', label: 'お問い合わせ' },
+              ].map((item) => (
+                <a
+                  key={item.href}
+                  href={item.href}
+                  className="text-xs sm:text-sm font-semibold text-slate-700 hover:text-slate-900 transition-colors whitespace-nowrap"
+                  style={{ fontFamily: "'Inter', 'Noto Sans JP', sans-serif" }}
+                >
+                  {item.label}
+                </a>
+              ))}
+            </div>
+
+            <div className="hidden sm:flex items-center gap-2 sm:gap-3">
+              <a
+                href="mailto:s2520778@u.tsukuba.ac.jp"
+                className="flex items-center justify-center rounded-full bg-slate-900 text-white h-9 w-9 hover:bg-slate-800 transition-colors"
+                aria-label="Email"
+              >
+                <Mail className="h-4 w-4" />
+              </a>
+              <a
+                href="https://github.com/thirsty-emirate3"
+                target="_blank"
+                rel="noreferrer"
+                className="flex items-center justify-center rounded-full bg-slate-900 text-white h-9 w-9 hover:bg-slate-800 transition-colors"
+                aria-label="GitHub"
+              >
+                <Github className="h-4 w-4" />
+              </a>
+              <span
+                className="flex items-center justify-center rounded-full bg-red-600 text-white h-9 w-9 shadow-sm"
+                aria-label="YouTube"
+              >
+                <Youtube className="h-4 w-4" />
+              </span>
             </div>
           </nav>
         </div>
@@ -83,6 +183,8 @@ function App() {
         <main className="relative z-10 mx-auto flex max-w-7xl flex-col gap-16 px-6 py-24 lg:px-12">
 
           <Hero />
+
+          <HeroStories />
 
           <TechStack />
 
@@ -95,14 +197,22 @@ function App() {
               <span className="rounded-full border border-orange-200 bg-white px-4 py-2 text-xs font-semibold text-orange-700">
                 制作中 / 試遊可の順で追加中
               </span>
-            </div>
-            <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
-              {displayedGames.map((project, index) => (
-                <div key={project.id} className={(!showAllGames && index >= 4) ? 'hidden sm:block' : ''}>
-                  <ProjectCard project={project} onSelect={setActiveGame} />
-                </div>
-              ))}
-            </div>
+          </div>
+            {showAllGames ? (
+              <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+                {displayedGames.map((project) => (
+                  <ProjectCard key={project.id} project={project} onSelect={setActiveGame} />
+                ))}
+              </div>
+            ) : (
+              <div ref={gamesRef} className="flex gap-4 overflow-x-auto no-scrollbar pb-2">
+                {displayedGames.map((project) => (
+                  <div key={project.id} className="min-w-[200px] sm:min-w-[220px]">
+                    <ProjectCard project={project} onSelect={setActiveGame} />
+                  </div>
+                ))}
+              </div>
+            )}
             {(games.length > 6) && (
               <div className="mt-8 text-center">
                 <button
@@ -155,13 +265,21 @@ px-4 py-1.5 rounded-full text-sm font-semibold whitespace-nowrap transition-all
               </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 min-h-[300px]">
-              {displayedAlgorithms.map((project, index) => (
-                <div key={project.id} className={(!showAllAlgorithms && index >= 4) ? 'hidden sm:block' : ''}>
-                  <ProjectCard project={project} onSelect={setActiveGame} />
-                </div>
-              ))}
-            </div>
+            {showAllAlgorithms ? (
+              <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 min-h-[300px]">
+                {displayedAlgorithms.map((project) => (
+                  <ProjectCard key={project.id} project={project} onSelect={setActiveGame} />
+                ))}
+              </div>
+            ) : (
+              <div ref={algosRef} className="flex gap-4 overflow-x-auto no-scrollbar pb-2 min-h-[260px]">
+                {displayedAlgorithms.map((project) => (
+                  <div key={project.id} className="min-w-[200px] sm:min-w-[220px]">
+                    <ProjectCard project={project} onSelect={setActiveGame} />
+                  </div>
+                ))}
+              </div>
+            )}
 
             {(filteredAlgorithms.length > 6) && (
               <div className="mt-8 text-center">
@@ -193,11 +311,21 @@ px-4 py-1.5 rounded-full text-sm font-semibold whitespace-nowrap transition-all
                 Next.js / Docker / GenAI
               </span>
             </div>
-            <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
-              {webWorks.map((project) => (
-                <ProjectCard key={project.id} project={project} onSelect={setActiveProject} />
-              ))}
-            </div>
+            {showAllAlgorithms ? (
+              <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+                {webWorks.map((project) => (
+                  <ProjectCard key={project.id} project={project} onSelect={setActiveProject} />
+                ))}
+              </div>
+            ) : (
+              <div ref={webRef} className="flex gap-4 overflow-x-auto no-scrollbar pb-2">
+                {webWorks.map((project) => (
+                  <div key={project.id} className="min-w-[200px] sm:min-w-[220px]">
+                    <ProjectCard project={project} onSelect={setActiveProject} />
+                  </div>
+                ))}
+              </div>
+            )}
           </section>
 
           <section id="youtube" className="space-y-6">

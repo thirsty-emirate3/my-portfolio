@@ -36,7 +36,7 @@ const SimonGame: React.FC = () => {
         setIsPlayerTurn(false);
         await new Promise(r => setTimeout(r, 800)); // Initial delay
 
-        for (let color of seq) {
+        for (const color of seq) {
             if (!isPlayingRef.current) return; // Use ref check to break loop
             await activateColor(color);
         }

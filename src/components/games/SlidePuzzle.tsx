@@ -9,7 +9,7 @@ export const SlidePuzzle = () => {
 
     const initializeGame = () => {
         // Create solvable puzzle
-        let newTiles = Array.from({ length: 15 }, (_, i) => i + 1);
+        const newTiles = Array.from({ length: 15 }, (_, i) => i + 1);
         newTiles.push(0); // 0 represents the empty space
 
         // Shuffle (Fisher-Yates) ensuring solvability
@@ -17,7 +17,7 @@ export const SlidePuzzle = () => {
         // but for a robust 15-puzzle, we need to check inversion count.
         // Let's do a valid shuffle by simulating moves from the solved state.
 
-        let currentTiles = [...newTiles];
+        const currentTiles = [...newTiles];
         let emptyIdx = 15;
         let previousMove = -1;
 

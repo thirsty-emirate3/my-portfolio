@@ -62,59 +62,53 @@ const Tag = ({ text }: { text: string }) => {
 };
 
 export const TechStack = () => {
-    // Using an array of open state so multiple accordions can be open if desired.
-    // The user requested a pull-down style.
-    const [openSections, setOpenSections] = useState<string[]>([]);
-
-    const toggleSection = (id: string) => {
-        setOpenSections(prev =>
-            prev.includes(id) ? prev.filter(s => s !== id) : [...prev, id]
-        );
-    };
+    const [open, setOpen] = useState<boolean>(false);
 
     return (
         <section id="skills" className="w-full">
-            <div className="mb-8">
+            <div className="mb-4">
                 <p className="text-xs uppercase tracking-[0.25em] text-blue-600/80 font-bold mb-2">Skills</p>
                 <h2 className="text-3xl font-semibold text-slate-900">開発スキル</h2>
             </div>
 
-            <div className="space-y-4">
-                {SKILLS.map((skillGroup) => {
-                    const isOpen = openSections.includes(skillGroup.id);
+            <div className="border border-slate-200/80 rounded-2xl bg-white shadow-sm overflow-hidden">
+                <button
+                    onClick={() => setOpen((v) => !v)}
+                    className="w-full flex items-center justify-between p-4 sm:p-5 bg-white hover:bg-slate-50 transition-colors"
+                    aria-expanded={open}
+                >
+                    <div className="flex items-center gap-3">
+                        <div className="p-2 sm:p-2.5 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-center">
+                            <Terminal className="w-5 h-5 text-slate-700" />
+                        </div>
+                        <h3 className="text-base sm:text-lg font-bold text-slate-800 font-['Space_Grotesk'] tracking-wide">
+                            全ての開発スキルを表示
+                        </h3>
+                    </div>
+                    <ChevronDown className={`w-5 h-5 text-slate-400 transition-transform duration-300 ${open ? 'rotate-180' : ''}`} />
+                </button>
 
-                    return (
-                        <div
-                            key={skillGroup.id}
-                            className="border border-slate-200/80 rounded-2xl bg-white shadow-sm overflow-hidden"
+                <AnimatePresence initial={false}>
+                    {open && (
+                        <motion.div
+                            initial={{ height: 0, opacity: 0 }}
+                            animate={{ height: 'auto', opacity: 1 }}
+                            exit={{ height: 0, opacity: 0 }}
+                            transition={{ duration: 0.3, ease: 'easeInOut' }}
+                            className="border-t border-slate-100"
                         >
-                            <button
-                                onClick={() => toggleSection(skillGroup.id)}
-                                className="w-full flex items-center justify-between p-4 sm:p-5 bg-white hover:bg-slate-50 transition-colors"
-                                aria-expanded={isOpen}
-                            >
-                                <div className="flex items-center gap-4">
-                                    <div className="p-2 sm:p-2.5 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-center">
-                                        {skillGroup.icon}
-                                    </div>
-                                    <h3 className="text-base sm:text-lg font-bold text-slate-800 font-['Space_Grotesk'] tracking-wide">
-                                        {skillGroup.title}
-                                    </h3>
-                                </div>
-                                <div className="p-2">
-                                    <ChevronDown className={`w-5 h-5 text-slate-400 transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} />
-                                </div>
-                            </button>
-
-                            <AnimatePresence initial={false}>
-                                {isOpen && (
-                                    <motion.div
-                                        initial={{ height: 0, opacity: 0 }}
-                                        animate={{ height: 'auto', opacity: 1 }}
-                                        exit={{ height: 0, opacity: 0 }}
-                                        transition={{ duration: 0.3, ease: 'easeInOut' }}
-                                    >
-                                        <div className="p-4 sm:p-5 pt-0 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
+                            <div className="p-4 sm:p-5 space-y-6">
+                                {SKILLS.map((skillGroup) => (
+                                    <div key={skillGroup.id} className="space-y-3">
+                                        <div className="flex items-center gap-3">
+                                            <div className="p-2 sm:p-2.5 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-center">
+                                                {skillGroup.icon}
+                                            </div>
+                                            <h4 className="text-base sm:text-lg font-bold text-slate-800 font-['Space_Grotesk'] tracking-wide">
+                                                {skillGroup.title}
+                                            </h4>
+                                        </div>
+                                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
                                             {skillGroup.items.map((item) => (
                                                 <div
                                                     key={item.name}
@@ -130,7 +124,7 @@ export const TechStack = () => {
                                                                 {item.duration}
                                                             </span>
                                                         ) : (
-                                                            <span className="h-[18px]"></span> // Spacing placeholder if no duration
+                                                            <span className="h-[18px]"></span>
                                                         )}
                                                     </div>
                                                     <div className="mt-auto pt-1">
@@ -139,12 +133,12 @@ export const TechStack = () => {
                                                 </div>
                                             ))}
                                         </div>
-                                    </motion.div>
-                                )}
-                            </AnimatePresence>
-                        </div>
-                    );
-                })}
+                                    </div>
+                                ))}
+                            </div>
+                        </motion.div>
+                    )}
+                </AnimatePresence>
             </div>
         </section>
     );

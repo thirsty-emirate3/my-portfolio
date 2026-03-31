@@ -46,7 +46,7 @@ export const BSTVisualizer: React.FC = () => {
         // For visualization, we keep the structure stable but traverse it for animation
 
         // Traverse Logic with Animation
-        while (true) {
+        while (current) {
             setHighlightedNodeId(current.id);
             await new Promise(r => setTimeout(r, 500));
 

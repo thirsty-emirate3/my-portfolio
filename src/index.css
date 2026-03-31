@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&family=Zen+Kaku+Gothic+New:wght@300;400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&family=Zen+Kaku+Gothic+New:wght@300;400;500;700&family=Bebas+Neue&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -6,8 +6,7 @@
 
 :root {
   color: #0f172a;
-  background-color: #fdfbf7;
-  /* Warmer, paper-like off-white */
+  background-color: #ffffff;
   font-family: 'Zen Kaku Gothic New', 'Inter', system-ui, -apple-system, sans-serif;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -16,7 +15,7 @@
 body {
   margin: 0;
   min-height: 100vh;
-  background-color: #fdfbf7;
+  background-color: #ffffff;
 }
 
 /* Noise Texture Overlay */
@@ -52,4 +51,48 @@ body {
   /* IE and Edge */
   scrollbar-width: none;
   /* Firefox */
+}
+
+.writing-mode-vertical {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+}
+
+@keyframes loadingBar {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(300%);
+  }
+}
+
+@keyframes hero-marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-hero-marquee {
+  animation: hero-marquee linear infinite;
+}
+
+@keyframes ws-aurora {
+  0% {
+    transform: translate3d(-6%, -4%, 0) scale(1.05);
+  }
+  50% {
+    transform: translate3d(6%, 4%, 0) scale(1.1);
+  }
+  100% {
+    transform: translate3d(-6%, -4%, 0) scale(1.05);
+  }
+}
+
+.ws-aurora {
+  animation: ws-aurora 14s ease-in-out infinite;
+  will-change: transform;
 }

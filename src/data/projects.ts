@@ -373,4 +373,3 @@ export const projects: Project[] = [
     component: BoidsVisualizer,
   },
 ];
-

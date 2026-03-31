@@ -83,7 +83,7 @@ const Game2048: React.FC = () => {
 
         if (direction === 'left' || direction === 'right') {
             for (let r = 0; r < SIZE; r++) {
-                let row = newBoard[r];
+                const row = newBoard[r];
                 if (direction === 'right') row.reverse();
                 const newRow = processLine(row);
                 if (direction === 'right') newRow.reverse();
@@ -92,7 +92,7 @@ const Game2048: React.FC = () => {
             }
         } else {
             for (let c = 0; c < SIZE; c++) {
-                let col = newBoard.map(row => row[c]);
+                const col = newBoard.map(row => row[c]);
                 if (direction === 'down') col.reverse();
                 const newCol = processLine(col);
                 if (direction === 'down') newCol.reverse();

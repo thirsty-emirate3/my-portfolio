@@ -125,8 +125,8 @@ const AStarVisualizer: React.FC = () => {
 
         if (!startNode || !goalNode) return;
 
-        let openSet: Node[] = [startNode];
-        let closedSet: Node[] = [];
+        const openSet: Node[] = [startNode];
+        const closedSet: Node[] = [];
 
         startNode.g = 0;
         startNode.h = heuristic(startNode, goalNode);
@@ -140,7 +140,7 @@ const AStarVisualizer: React.FC = () => {
             for (let i = 0; i < openSet.length; i++) {
                 if (openSet[i].f < openSet[lowestIndex].f) lowestIndex = i;
             }
-            let current = openSet[lowestIndex];
+            const current = openSet[lowestIndex];
 
             // Reached Goal?
             if (current.row === goalNode.row && current.col === goalNode.col) {
@@ -165,7 +165,7 @@ const AStarVisualizer: React.FC = () => {
 
             // Neighbors
             const neighbors = getNeighbors(current, currentGrid);
-            for (let neighbor of neighbors) {
+            for (const neighbor of neighbors) {
                 if (closedSet.includes(neighbor) || neighbor.type === 'wall') continue;
 
                 // dist between neighbors is 1

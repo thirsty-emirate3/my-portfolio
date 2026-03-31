@@ -63,7 +63,7 @@ export const SortingVisualizer = () => {
 
                 if (arr[j] > arr[j + 1]) {
                     // Swap
-                    let temp = arr[j];
+                    const temp = arr[j];
                     arr[j] = arr[j + 1];
                     arr[j + 1] = temp;
                     setArray([...arr]);
@@ -82,12 +82,12 @@ export const SortingVisualizer = () => {
 
     const runQuickSort = async () => {
         setIsSorting(true);
-        let arr = [...array];
+        const arr = [...array];
         let countComp = 0;
         let countSwap = 0;
 
         const partition = async (low: number, high: number) => {
-            let pivot = arr[high];
+            const pivot = arr[high];
             let i = low - 1;
 
             for (let j = low; j < high; j++) {

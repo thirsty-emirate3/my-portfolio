@@ -5,7 +5,10 @@ export const SoundController = {
 
     init() {
         if (!this.ctx) {
-            this.ctx = new (window.AudioContext || (window as any).webkitAudioContext)();
+            const WebkitAudioContext = (window as unknown as { webkitAudioContext?: typeof AudioContext })
+                .webkitAudioContext;
+            const Ctx = window.AudioContext || WebkitAudioContext;
+            this.ctx = Ctx ? new Ctx() : null;
         }
     },
 

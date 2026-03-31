@@ -103,7 +103,7 @@ export const CodeTyper = () => {
         return snippet.code.split('').map((char, index) => {
             let color = 'text-slate-400';
             let bg = '';
-            let isCurrent = index === input.length;
+            const isCurrent = index === input.length;
 
             if (index < input.length) {
                 if (input[index] === char) {

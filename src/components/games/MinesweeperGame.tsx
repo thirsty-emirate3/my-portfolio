@@ -24,7 +24,7 @@ const MinesweeperGame: React.FC = () => {
     const [showHelp, setShowHelp] = useState(false);
 
     const initGame = useCallback(() => {
-        let newGrid: Cell[][] = Array.from({ length: ROWS }, (_, y) =>
+        const newGrid: Cell[][] = Array.from({ length: ROWS }, (_, y) =>
             Array.from({ length: COLS }, (_, x) => ({
                 x, y, isMine: false, isRevealed: false, isFlagged: false, neighborCount: 0
             }))
