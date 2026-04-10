@@ -105,11 +105,11 @@ export const HeroStories = () => {
                     スマートライフ事業
                   </h3>
                   <p className="mt-2 text-sm sm:text-base font-extrabold text-slate-700">
-                    無意識に使われるサービスを、生活の基盤から届ける
+                    最新技術を分かりやすいサービスとして、生活の基盤から届ける
                   </p>
                   <p className="mt-2 text-sm sm:text-base font-bold text-slate-700">
                     <span className="text-slate-900 font-extrabold">やりたい理由:</span>{' '}
-                    利用側の生活に密着したところで、実際に使われるサービスを作りたいからです。
+                    日常に密着したスマートヘルスなどの領域で、あらゆる技術を直感的に使えるUI/UXとして届けたいからです。
                   </p>
                 </div>
                 <p className="text-xs font-extrabold uppercase tracking-[0.28em] text-slate-500">
@@ -150,8 +150,7 @@ export const HeroStories = () => {
                           問題意識
                         </p>
                       <p className="mt-2 text-base sm:text-lg leading-relaxed font-bold text-slate-800">
-                        アプリが増えすぎて、ユーザーが「どれを使えばいいか」迷う。特に高齢者にとっては、この複雑さが
-                        <span className="text-red-600 font-extrabold">サービス利用の障壁</span>になっている。
+                        飲食店のアルバイト経験から、<span className="text-red-600 font-extrabold">「技術は使う側にとって分かりやすくなければ価値にならない」</span>と痛感した。どんなに優れた技術でも、使い手側が理解できるUI/UXが欠けていれば意味がないと考えている。
                       </p>
                     </div>
 
@@ -160,8 +159,7 @@ export const HeroStories = () => {
                           やりたいこと
                         </p>
                       <p className="mt-2 text-base sm:text-lg leading-relaxed font-bold text-slate-800">
-                        ユーザーがアプリを<span className="text-red-600 font-extrabold">選ばなくても</span>、
-                        生活の中で<span className="text-red-600 font-extrabold">無意識に最適</span>なサービスが提供される体験を実現したい。
+                        IOWNや6Gなどの技術を分かりやすい形として届けたい。特にスマートヘルス領域において、若者から高齢者まで<span className="text-red-600 font-extrabold">直感的に使えるUI/UX</span>を設計し、誰もがワクワクする価値を提供したい。
                       </p>
                     </div>
 
@@ -170,9 +168,7 @@ export const HeroStories = () => {
                           具体案
                         </p>
                       <p className="mt-2 text-base sm:text-lg leading-relaxed font-bold text-slate-800">
-                        契約時点から利用シーンに応じて、決済・ポイント・健康サービスなどが
-                        <span className="text-red-600 font-extrabold">シームレスに連携</span>し、
-                        迷わず使える仕組みを<span className="text-red-600 font-extrabold">UI/UX設計</span>として落とし込む。
+                        dヘルスケアを進化させ、<span className="text-red-600 font-extrabold">無意識に生活に溶け込む健康アプリ</span>を作る。自身で入力等を行うのではなく、スマホを握る力などの日常の動作から6Gの高速分析を用いて健康状態を推定できるようにする。
                       </p>
                     </div>
 
@@ -181,9 +177,7 @@ export const HeroStories = () => {
                           ドコモでやる理由
                         </p>
                       <p className="mt-2 text-base sm:text-lg leading-relaxed font-bold text-slate-800">
-                        通信という<span className="text-red-600 font-extrabold">生活基盤</span>を持ち、
-                        契約時からユーザーと接点を持てる御社だからこそ、
-                        無意識に使われるサービスを現実にできると考えている。
+                        祖母が御社の<span className="text-red-600 font-extrabold">dヘルスケア</span>で生活の質を向上させた原体験がある。通信基盤を持ち、ITで生活を豊かにする実績がある御社でこそ、自らがそのような体験を設計する側に立ちたい。
                       </p>
                     </div>
                   </motion.div>
